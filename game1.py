@@ -33,3 +33,7 @@ hit_ball.penup()
 hit_ball.goto(0, 0)
 hit_ball.dx = 5
 hit_ball.dy = -5
+
+# Initialize the score
+left_player = 0
+right_player = 0
