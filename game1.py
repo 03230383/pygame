@@ -37,3 +37,13 @@ hit_ball.dy = -5
 # Initialize the score
 left_player = 0
 right_player = 0
+
+# Displays the score
+sketch = turtle.Turtle()
+sketch.speed(0)
+sketch.color("black")
+sketch.penup()
+sketch.hideturtle()
+sketch.goto(0, 260)
+sketch.write("Left_player : 0    Right_player: 0",
+             align="center", font=("Courier", 24, "normal"))
