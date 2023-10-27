@@ -54,8 +54,18 @@ def paddleaup():
     y += 20
     left_pad.sety(y)
  
- 
 def paddleadown():
     y = left_pad.ycor()
     y -= 20
     left_pad.sety(y)
+
+def paddlebup():
+    y = right_pad.ycor()
+    y += 20
+    right_pad.sety(y)
+ 
+ 
+def paddlebdown():
+    y = right_pad.ycor()
+    y -= 20
+    right_pad.sety(y)
