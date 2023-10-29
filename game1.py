@@ -83,3 +83,13 @@ while True:
  
     hit_ball.setx(hit_ball.xcor()+hit_ball.dx)
     hit_ball.sety(hit_ball.ycor()+hit_ball.dy)
+
+        # Checking borders
+    if hit_ball.ycor() > 280:
+        hit_ball.sety(280)
+        hit_ball.dy *= -1
+ 
+    if hit_ball.ycor() < -280:
+        hit_ball.sety(-280)
+        hit_ball.dy *= -1
+ 
