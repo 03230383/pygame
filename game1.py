@@ -1,125 +1,103 @@
-import turtle
+import pygame,sys,random
+def ballmove():
+    
+    pygame.display.set_caption('Ping Pong by Tshering Wangmo')
+    
+    global ballx,bally,o_score,p_score
+    ball.x += ballx
+    ball.y += bally
+    if ball.top <=0 or ball.bottom >=height:
+        bally *= -1
+    if ball.right >= width or ball.left <=0 :
+        if ball.right >= width:
+            o_score +=1
+        if ball.left<=0:
+            p_score +=1
+        ball_restart()
+    if ball.colliderect(player) or ball.colliderect(opp):
+        ballx *= -1
+def player_animation():
+    player.y += p_speed
+    if player.top <=0:
+        player.top = 0
+    if player.bottom>= height:
+        player.bottom = height
+def ball_restart():
+    global ballx,bally
+    ball.center = (width/2,height/2) 
+    ballx *=0
+    bally *=0
+    opp.center =(10,height/2)
+    player.center = (width-5,height/2)
+# text variables:-
+p_score = 0
+o_score = 0
+pygame.init()
+game_font = pygame.font.Font("freesansbold.ttf",20)
 
-# sc = screen
-sc = turtle.Screen()
-sc.title("Pong game")
-sc.bgcolor("pink")
-sc.setup(width=1000, height=600)
-
-# Left paddle
-left_pad = turtle.Turtle()
-left_pad.speed(0)
-left_pad.shape("square")
-left_pad.color("purple")
-left_pad.shapesize(stretch_wid=6, stretch_len=2)
-left_pad.penup()
-left_pad.goto(-400, 0)
-
-# Right paddle
-right_pad = turtle.Turtle()
-right_pad.speed(0)
-right_pad.shape("square")
-right_pad.color("purple")
-right_pad.shapesize(stretch_wid=6, stretch_len=2)
-right_pad.penup()
-right_pad.goto(400, 0)
-
-# Ball of circle shape
-hit_ball = turtle.Turtle()
-hit_ball.speed(40)
-hit_ball.shape("circle")
-hit_ball.color("green")
-hit_ball.penup()
-hit_ball.goto(0, 0)
-hit_ball.dx = 5
-hit_ball.dy = -5
-
-# Initialize the score
-left_player = 0
-right_player = 0
-
-# Displays the score
-sketch = turtle.Turtle()
-sketch.speed(0)
-sketch.color("black")
-sketch.penup()
-sketch.hideturtle()
-sketch.goto(0, 260)
-sketch.write("Left_player : 0    Right_player: 0",
-             align="center", font=("Courier", 24, "normal"))
-
-# Functions to move paddle vertically
-def paddleaup():
-    y = left_pad.ycor()
-    y += 20
-    left_pad.sety(y)
- 
-def paddleadown():
-    y = left_pad.ycor()
-    y -= 20
-    left_pad.sety(y)
-
-def paddlebup():
-    y = right_pad.ycor()
-    y += 20
-    right_pad.sety(y)
- 
- 
-def paddlebdown():
-    y = right_pad.ycor()
-    y -= 20
-    right_pad.sety(y)
-
-# Keyboard bindings
-sc.listen()
-sc.onkeypress(paddleaup, "w")
-sc.onkeypress(paddleadown, "z")
-sc.onkeypress(paddlebup, "Up")
-sc.onkeypress(paddlebdown, "Down")
- 
- 
+width = 1024
+height = 700
+screen= pygame.display.set_mode((width,height))
+clock = pygame.time.Clock()
+ball = pygame.Rect(width/2-15,height/2-15,30,30)
+player = pygame.Rect(width-20,height/2 -100,10,140)
+opp = pygame.Rect(10,height/2-100,10,180)
+bg = pygame.Color("grey12")
+light_grey = pygame.Color(200,200,200)
+ballx=0
+bally=0
+p_speed = 0
+o_speed = 6
+a=6
 while True:
-    sc.update()
- 
-    hit_ball.setx(hit_ball.xcor()+hit_ball.dx)
-    hit_ball.sety(hit_ball.ycor()+hit_ball.dy)
-
-        # Checking borders
-    if hit_ball.ycor() > 280:
-        hit_ball.sety(280)
-        hit_ball.dy *= -1
- 
-    if hit_ball.ycor() < -280:
-        hit_ball.sety(-280)
-        hit_ball.dy *= -1
-
-    if hit_ball.xcor() > 500:
-        hit_ball.goto(0, 0)
-        hit_ball.dy *= -1
-        left_player += 1
-        sketch.clear()
-        sketch.write("Left_player : {}    Right_player: {}".format(
-                      left_player, right_player), align="center",
-                      font=("Courier", 24, "normal"))
- 
-    if hit_ball.xcor() < -500:
-        hit_ball.goto(0, 0)
-        hit_ball.dy *= -1
-        right_player += 1
-        sketch.clear()
-        sketch.write("Left_player : {}    Right_player: {}".format(
-                                 left_player, right_player), align="center",
-                                 font=("Courier", 24, "normal"))
-        
-    # Paddle ball collision
-    if (hit_ball.xcor() > 360 and
-                        hit_ball.xcor() < 370) and(hit_ball.ycor() < right_pad.ycor()+40 and hit_ball.ycor() > right_pad.ycor()-40):
-        hit_ball.setx(360)
-        hit_ball.dx*=-1
-        
-    if (hit_ball.xcor()<-360 and
-                       hit_ball.xcor()>-370) and(hit_ball.ycor()<left_pad.ycor()+40 and
-                        hit_ball.ycor()>left_pad.ycor()-40):
-        hit_ball.setx(-360)
-        hit_ball.dx*=-1
- 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                p_speed+=a
+                
+            if event.key == pygame.K_UP:
+                p_speed-=a
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                p_speed-=a
+            if event.key == pygame.K_UP:
+                p_speed+=a    
+        if ballx ==0 and bally==0:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    ballx=7*random.choice((1,-1))
+                    bally=7*random.choice((1,-1))
+                       
+                if event.key == pygame.K_UP:
+                    ballx=7*random.choice((1,-1))
+                    bally=7*random.choice((1,-1))
+                    
+    ballmove()
+    player_animation()
+    if(ball.x<width/2):
+        if opp.top <=ball.y:
+            opp.top += o_speed
+        if opp.bottom >= ball.y:
+            opp.bottom -= o_speed
+    
+    if opp.top <=0:
+        opp.top =0
+    if opp.bottom >= height:
+        opp.bottom = height
+    #visible
+    screen.fill(bg)
+    pygame.draw.rect(screen,light_grey,player)
+    pygame.draw.rect(screen,light_grey,opp)
+    pygame.draw.ellipse(screen,light_grey,ball)
+    pygame.draw.aaline(screen,light_grey,(width/2,0),(width/2,height))
+    
+    player_text = game_font.render(f"{p_score}",False,light_grey)
+    screen.blit(player_text,(640,height/2))
+    opp_text = game_font.render(f"{o_score}",False,light_grey)
+    screen.blit(opp_text,(320,height/2))
+    
+    pygame.display.flip()
+    clock.tick(75)
